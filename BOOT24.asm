@@ -17,9 +17,6 @@ X_E0D8	.EQU	0E0D8h
 F3_LEN	.EQU    03300h	; размер
 #DEFINE F4_PRG F3_PRG+F3_LEN	; Монитор СуперМонстр v3.5
 F4_LEN	.EQU    03D00h	; размер в блоках
-#DEFINE FM9_PRG F4_PRG+F4_LEN	; Загрузчик FM9
-FM9_LEN	.EQU	00180h	; размер
-
 ;
 	.ORG    00000h
 L_0000:	DI
