@@ -7,7 +7,7 @@
 Выполнен на базе загрузчика [BOOT45](http://www.sensi.org/scalar/ware/541/) ([зеркало](http://tenroom.ru/scalar/ware/541/)). Основные изменения:
 - заменил загрузчик с HDD на новый, работающий в LBA, заменил иконку НЖМД на более красивую
 - удалил тест техпрогона
-- обновил бейсик до [версии 2.72](https://zx-pk.ru/threads/30566-bejsiki-dlya-vektora-06ts-i-klonov.html?p=1177056&viewfull=1#post1177056)
+- обновил бейсик до [версии 2.80](https://zx-pk.ru/threads/30566-bejsiki-dlya-vektora-06ts-i-klonov.html?p=1177056&viewfull=1#post1177056)
 - обновил монитор до [версии 4.0 (Супер-монстр 2)](http://www.sensi.org/scalar/ware/726/) ([зеркало](http://tenroom.ru/scalar/ware/726/))
 - добавил возможность загрузки данных с магнитофона в формате FM9
 - улучшил запуск системы с квази-диска, теперь файл OS.COM не обязательно должен быть первым
