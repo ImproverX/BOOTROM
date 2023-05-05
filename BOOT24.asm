@@ -20,9 +20,9 @@ M_FM9l	.EQU	0E050h	; подпрограмма для FM9
 X_E053	.EQU	0E053h
 X_E0D8	.EQU	0E0D8h
 ;
-;F3_PRG			; Бейсик 2.72
-F3_LEN	.EQU    03300h	; размер
-#DEFINE F4_PRG F3_PRG+F3_LEN	; Монитор СуперМонстр v3.5
+;F3_PRG			; Бейсик
+F3_LEN	.EQU    03200h	; размер
+#DEFINE F4_PRG F3_PRG+F3_LEN	; Монитор СуперМонстр
 F4_LEN	.EQU    03D00h	; размер в блоках
 ;
 	.ORG    00000h
@@ -1010,7 +1010,7 @@ L_067B:	LXI  H, L_078E	; ссылка на картинку с диском
 	CALL    L_SETB	; чтение параметров загрузки
 	CALL    L_RHDD
 L_DDN:	LHLD    M_BT	; считываем начальный адрес
-	MVI  A, 0FCh
+L_FBLA:	MVI  A, 0FCh
 	ANA  L
 	ORA  H		; начальный адрес больше 0003h
 	JZ      L_FBL2	; заполняем блоки в таблице c JMP addr(HL)
@@ -1627,8 +1627,8 @@ L_FM93:	CALL    L_FM9B
 	DCR  C
 	JNZ     L_FM93
 	CALL    L_FM9B
-	ORA  A
-	JZ      L_FM92
+;;;	ORA  A		; убрал чтобы можно было грузить программы с нулевого адреса
+;;;	JZ      L_FM92
 	MOV  L, A
 	MVI  H, 0DEh
 	MVI  M, 01Bh
@@ -1645,10 +1645,12 @@ L_FM93:	CALL    L_FM9B
 	MOV  L, A
 	MOV  C, A
 	CALL    M_FM9l
-	MOV  D, B	; количество блоков
+	PUSH H		; начальный адрес
 	ORA  A
-	JZ     L_FBLK	; заполнение блоков
-L_FM9z:	MOV  A, M
+	JZ     L_FM9y
+	PUSH H
+	PUSH B		; количество байт
+L_FM9z:	MOV  A, M	; цикл инверсии данных
 	CMA
 	MOV  M, A
 	INX  H
@@ -1656,7 +1658,31 @@ L_FM9z:	MOV  A, M
 	JNZ     L_FM9z
 	DCR  B
 	JNZ     L_FM9z
-	JMP     L_FBLK	; заполнение блоков
+	POP  B
+	POP  H
+L_FM9y:	MVI  D, 0DEh	; адрес индикатора загрузки FM9
+	MOV  E, H
+	MOV  L, H
+	MVI  H, 0DDh	; откуда будем копировать
+	MOV  A, M
+	STAX D
+	MOV  A, L
+	ADD  B
+	DCR  A
+	MOV  E, A
+	MOV  L, A
+	MOV  A, M
+	STAX D
+	INR  D
+L_FM9x:	STAX D
+	DCR  E
+	DCR  L
+	MOV  A, M
+	JNZ     L_FM9x
+	STAX D
+	MOV  D, B	; количество блоков
+	POP  H		; начальный адрес
+	JMP     L_FBLA	; заполнение блоков
 ;
 L_FM9A:	MVI  E, 000h
 	IN      001h
