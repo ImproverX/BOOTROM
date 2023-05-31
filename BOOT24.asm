@@ -148,10 +148,11 @@ L_00F6:	EI
 	INX  B
 	MOV  A, C
 	ANI     008h
-	MVI  A, 007h
-	JNZ     L_0102
-	DCR  A
-L_0102: OUT     000h
+	RAR
+	RAR
+	RAR
+	ADI	006h
+	OUT     000h
 	JMP     L_00F6	; ожидание БЛК-СБРОС
 ;
 L_0107: EI		; запись палитры и опрос клавиатуры
